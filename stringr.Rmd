@@ -1,0 +1,90 @@
+---
+title: "stringr tutorial"
+author: "Alicia Halhed"
+date: "13/02/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+This is an RMarkdown file. Code goes between in the grey blocks, whereas the white area is simply a text editor. 
+
+We are going to load in the tidyverse suite of packages, which includes the `stringr` package. We will nonetheless attach the whole `tidyverse` to have access to the pipe operator `%>%`.
+```{r}
+library(tidyverse)
+```
+
+We will be working with `stringr-data` for this tutorial. There are three sets of strings: `sentences`, `fruit`, and `words`
+```{r}
+head(sentences)
+head(words)
+head(fruit)
+```
+
+What if you would like to change the case of your letter strings?
+```{r}
+# change to upper case
+fruit %>% str_to_upper
+# change to lower case
+sentences %>% str_to_lower
+# change to sentence sentence format
+# first letter of first word capitalized
+fruit %>% str_to_sentence
+```
+
+Can we put multiple strings into a single string?
+```{r}
+str_c(fruit, sentences, sep = ": ")
+```
+
+How many times does the word "the" appear in our sentences?
+```{r}
+# in each sentence
+sentences %>% 
+  str_to_lower %>% # we don't care about the capitalization
+  str_count(pattern = "the")
+# where in the sentence is "the"?
+sentences %>% 
+  str_to_lower %>%
+  str_locate_all("the") %>% # str_locate identifies first occurrence
+  head
+# how many start with "The"?
+sentences %>%
+  str_starts("The") %>%
+  sum
+```
+
+Where is the letter v in fruit names?
+```{r}
+fruit %>% str_which("v")
+```
+
+How long are the strings?
+```{r}
+# mean sentence length (characters)
+sentences %>%
+  str_length %>%
+  mean
+```
+
+Do any of the fruit contain the word "fruit" in their name?
+```{r}
+# are there any? yes/no
+fruit %>% str_detect("fruit")
+# which ones?
+fruit %>% str_subset("fruit")
+```
+
+The function I typically use the most often is the `word`. This function allows you to extract different "words" from your string, with whatever separator you specify.
+```{r}
+# let's take the second word of every sentence
+sentences %>%
+  word(2) # this defaults to separating by spaces
+# but we could tell it to separate by a different character
+sentences %>%
+  word(2, sep = "h")
+```
+
+If you are looking for tips on using regular expressions with the stringr package, I would suggest looking at the cheat sheet for stringr (available online).
