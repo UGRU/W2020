@@ -1,7 +1,8 @@
 # W2020
 Tutorials and code for the winter 2020 semester
 
-Tutorial Schedule of Presenters
+
+## Tutorial Schedule of Presenters
 
 Date  Topic Presenter
 
