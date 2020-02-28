@@ -240,4 +240,41 @@ serengeti_3 %>%
 ## DO YOU HAVE ANY EXAMPLES OF USING pmap() IN YOUR OWN WORK??
 
 
+# pmap lets you lapply a function that takes the colnmaes as args
+# note the ... below lets us throw away the columns we don't need, 
+# and we can avoid having to use these in the function's argument
+# list
+
+new_name = function(Species, Petal.Width, Petal.Length, ...){
+  return(paste(Species, Petal.Width, Petal.Length, sep=";"))
+}
+
+# here pmap takes all the columns of iris, and use them as the arguments
+# to be passed to the new_name func. Note the ... in the new_name args list
+# tosses the two sepal length columns and then just uses the relevant columns
+# without the ... we get an error saying that 
+iris$outname = pmap(iris,  new_name)
+
+
+iris$outname = lapply(1:nrow(iris), function(i){
+  new_name(iris$Species[[i]], iris$Petal.Width[[i]], iris$Petal.Length[[i]])
+  })
+
+
+# we can also use various data sources, by making a labelled list, where the labels are
+# the function args, the data can be passed to the function through pmap. shorter
+# data structures are recycled (use 10 over and over below)
+
+
+numerators = c(1,2,3,4,5,6,7,8)
+denoms = c(2,4,6,8,10,12,14,16)
+mul = c(10)
+
+div = function(n, d, m){
+  return ((n / d)*m)
+}
+
+pmap(list(n = numerators, d = denoms, m = mul), div)
+
+
 ## -- ## -- ## -- ## -- ## END OF SCRIPT ## -- ## -- ## -- ## -- ##
